@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabbit Animation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            position: absolute;
+        }
+
+        .rabbit {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 300px;
+            height: 300px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .jump {
+            animation: jump 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            background-color: #3498db;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="sell.jpeg" alt="Local Vendor" class="main-image">
+        <img src="1.png" alt="Rabbit" class="rabbit" id="rabbit">
+    </div>
+
+    <div class="button-container">
+        <button onclick="setRabbit('normal')">Normal</button>
+        <button onclick="setRabbit('sad')">Sad</button>
+        <button onclick="setRabbit('happy')">Happy</button>
+    </div>
+
+    <script>
+        function setRabbit(state) {
+            let rabbit = document.getElementById("rabbit");
+
+            if (state === "normal") {
+                rabbit.src = "1.png";
+                rabbit.classList.remove("jump");
+            } else if (state === "sad") {
+                rabbit.src = "2.png";
+                rabbit.classList.remove("jump");
+            } else if (state === "happy") {
+                rabbit.src = "3.png";
+                rabbit.classList.add("jump"); // Add jumping animation for happiness
+            }
+        }
+    </script>
+
+</body>
+</html>
