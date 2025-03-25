@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabbit Animation</title>
+    <title>Rabbit Animation with Sound</title>
     <style>
         body {
             display: flex;
@@ -38,16 +38,28 @@
             left: 10px;
             width: 300px;
             height: 300px;
-            transition: transform 0.3s ease-in-out;
+            display: none; /* Hidden by default */
+            transition: transform 1.5s ease-in-out;
         }
 
+        /* Slower Shrinking Animation */
+        .sad {
+            animation: shrink 1.5s forwards;
+        }
+
+        @keyframes shrink {
+            0% { transform: scale(1); }
+            100% { transform: scale(0.7); }
+        }
+
+        /* Joyful Jump */
         .jump {
-            animation: jump 0.5s ease-in-out infinite alternate;
+            animation: fastJump 0.3s ease-in-out infinite alternate;
         }
 
-        @keyframes jump {
+        @keyframes fastJump {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-20px); }
+            100% { transform: translateY(-25px); }
         }
 
         .button-container {
@@ -75,29 +87,44 @@
 
     <div class="container">
         <img src="sell.jpeg" alt="Local Vendor" class="main-image">
-        <img src="1.png" alt="Rabbit" class="rabbit" id="rabbit">
+        <img src="" alt="Rabbit" class="rabbit" id="rabbit"> <!-- No image initially -->
     </div>
 
     <div class="button-container">
-        <button onclick="setRabbit('normal')">Normal</button>
         <button onclick="setRabbit('sad')">Sad</button>
-        <button onclick="setRabbit('happy')">Happy</button>
+        <button onclick="setRabbit('joy')">Joy</button>
     </div>
+
+    <!-- Audio Elements -->
+    <audio id="sadSound" src="sad1.mp3"></audio>
+    <audio id="joySound" src="happy.mp3"></audio>
 
     <script>
         function setRabbit(state) {
             let rabbit = document.getElementById("rabbit");
+            let sadSound = document.getElementById("sadSound");
+            let joySound = document.getElementById("joySound");
 
-            if (state === "normal") {
-                rabbit.src = "1.png";
-                rabbit.classList.remove("jump");
-            } else if (state === "sad") {
+            // Show rabbit
+            rabbit.style.display = "block";
+
+            // Remove all animations first
+            rabbit.classList.remove("sad", "jump");
+
+            if (state === "sad") {
                 rabbit.src = "2.png";
-                rabbit.classList.remove("jump");
-            } else if (state === "happy") {
+                rabbit.classList.add("sad");
+                sadSound.play(); // Play sad sound
+            } else if (state === "joy") {
                 rabbit.src = "3.png";
-                rabbit.classList.add("jump"); // Add jumping animation for happiness
+                rabbit.classList.add("jump");
+                joySound.play(); // Play cheering sound
             }
+
+            // Remove the rabbit after 6 seconds
+            setTimeout(() => {
+                rabbit.style.display = "none";
+            }, 6000);
         }
     </script>
 
