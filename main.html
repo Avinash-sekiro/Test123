@@ -38,28 +38,28 @@
             left: 10px;
             width: 300px;
             height: 300px;
-            display: none; /* Hidden by default */
+            display: none; /* Hidden initially */
             transition: transform 1.5s ease-in-out;
         }
 
-        /* Slower Shrinking Animation */
+        /* Sad Animation - Slow Shrinking */
         .sad {
             animation: shrink 1.5s forwards;
         }
 
         @keyframes shrink {
             0% { transform: scale(1); }
-            100% { transform: scale(0.7); }
+            100% { transform: scale(0.6); }
         }
 
         /* Joyful Jump */
         .jump {
-            animation: fastJump 0.3s ease-in-out infinite alternate;
+            animation: smoothJump 0.5s ease-in-out infinite alternate;
         }
 
-        @keyframes fastJump {
+        @keyframes smoothJump {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-25px); }
+            100% { transform: translateY(-30px); }
         }
 
         .button-container {
@@ -87,7 +87,7 @@
 
     <div class="container">
         <img src="sell.jpeg" alt="Local Vendor" class="main-image">
-        <img src="" alt="Rabbit" class="rabbit" id="rabbit"> <!-- No image initially -->
+        <img src="" alt="Rabbit" class="rabbit" id="rabbit">
     </div>
 
     <div class="button-container">
@@ -96,35 +96,53 @@
     </div>
 
     <!-- Audio Elements -->
-    <audio id="sadSound" src="sad1.mp3"></audio>
-    <audio id="joySound" src="happy.mp3"></audio>
+    <audio id="sadSound1" src="s1.mp3"></audio>
+    <audio id="sadSound2" src="s2.mp3"></audio>
+    <audio id="sadSound3" src="s3.mp3"></audio>
+
+
+    <audio id="joySound1" src="h1.mp3"></audio>
+    <audio id="joySound2" src="h2.mp3"></audio>
+    <audio id="joySound3" src="h3.mp3"></audio>
 
     <script>
+        function getRandomSound(type) {
+            let sounds = [];
+            if (type === "sad") {
+                sounds = ["sadSound1", "sadSound2", "sadSound3"];
+        
+            } else if (type === "joy") {
+                sounds = ["joySound1", "joySound2", "joySound3"];
+            }
+            return document.getElementById(sounds[Math.floor(Math.random() * sounds.length)]);
+        }
+
         function setRabbit(state) {
             let rabbit = document.getElementById("rabbit");
-            let sadSound = document.getElementById("sadSound");
-            let joySound = document.getElementById("joySound");
 
             // Show rabbit
             rabbit.style.display = "block";
-
-            // Remove all animations first
             rabbit.classList.remove("sad", "jump");
 
             if (state === "sad") {
                 rabbit.src = "2.png";
                 rabbit.classList.add("sad");
-                sadSound.play(); // Play sad sound
+
+                // Play sad sound & failure sound together
+                getRandomSound("sad").play();
+                setTimeout(() => {
+                    getRandomSound("fail").play();
+                }, 500);
             } else if (state === "joy") {
                 rabbit.src = "3.png";
                 rabbit.classList.add("jump");
-                joySound.play(); // Play cheering sound
+                getRandomSound("joy").play();
             }
 
-            // Remove the rabbit after 6 seconds
+            // Hide rabbit after 3 seconds
             setTimeout(() => {
                 rabbit.style.display = "none";
-            }, 6000);
+            }, 3000);
         }
     </script>
 
