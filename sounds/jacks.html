@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabbit Animation with Sound</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            position: absolute;
+        }
+
+        .rabbit {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 300px;
+            height: 300px;
+            display: none; /* Hidden initially */
+            transition: transform 1.5s ease-in-out;
+        }
+
+        /* Sad Animation - Slow Shrinking */
+        .sad {
+            animation: shrink 1.5s forwards;
+        }
+
+        @keyframes shrink {
+            0% { transform: scale(1); }
+            100% { transform: scale(0.6); }
+        }
+
+        /* Joyful Jump */
+        .jump {
+            animation: smoothJump 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes smoothJump {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-30px); }
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            background-color: #3498db;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="sell.jpeg" alt="Local Vendor" class="main-image">
+        <img src="" alt="Rabbit" class="rabbit" id="rabbit">
+    </div>
+
+    <div class="button-container">
+        <button onclick="setRabbit('sad')">Sad</button>
+        <button onclick="setRabbit('joy')">Joy</button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sadSound1" src="s1.mp3"></audio>
+    <audio id="sadSound2" src="s2.mp3"></audio>
+    <audio id="sadSound3" src="s3.mp3"></audio>
+
+
+    <audio id="joySound1" src="h1.mp3"></audio>
+    <audio id="joySound2" src="h2.mp3"></audio>
+    <audio id="joySound3" src="h3.mp3"></audio>
+
+    <script>
+        function getRandomSound(type) {
+            let sounds = [];
+            if (type === "sad") {
+                sounds = ["sadSound1", "sadSound2", "sadSound3"];
+        
+            } else if (type === "joy") {
+                sounds = ["joySound1", "joySound2", "joySound3"];
+            }
+            return document.getElementById(sounds[Math.floor(Math.random() * sounds.length)]);
+        }
+
+        function setRabbit(state) {
+            let rabbit = document.getElementById("rabbit");
+
+            // Show rabbit
+            rabbit.style.display = "block";
+            rabbit.classList.remove("sad", "jump");
+
+            if (state === "sad") {
+                rabbit.src = "2.png";
+                rabbit.classList.add("sad");
+
+                // Play sad sound & failure sound together
+                getRandomSound("sad").play();
+                setTimeout(() => {
+                    getRandomSound("fail").play();
+                }, 500);
+            } else if (state === "joy") {
+                rabbit.src = "3.png";
+                rabbit.classList.add("jump");
+                getRandomSound("joy").play();
+            }
+
+            // Hide rabbit after 3 seconds
+            setTimeout(() => {
+                rabbit.style.display = "none";
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
